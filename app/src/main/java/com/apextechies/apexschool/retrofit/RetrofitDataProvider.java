@@ -1,13 +1,20 @@
 package com.apextechies.apexschool.retrofit;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.apextechies.apexschool.common.BaseActivity;
+import com.apextechies.apexschool.model.NotificationModel;
+import com.apextechies.apexschool.utilz.WebServices;
 
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,7 +39,7 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
 
 
         Retrofit retrofit = new Retrofit.Builder()
-               // .baseUrl(ConsantValue.BASE_URL)
+                .baseUrl(WebServices.BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -45,5 +52,42 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
     }
 
 
+    @Override
+    public void notification(String school_id, final DownlodableCallback<NotificationModel> callback) {
+        createRetrofitService().otpLogin(school_id).enqueue(
+                new Callback<NotificationModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<NotificationModel> call, @NonNull final Response<NotificationModel> response) {
+                        if (response.isSuccessful()) {
 
+                            NotificationModel mobileRegisterPojo = response.body();
+                            callback.onSuccess(mobileRegisterPojo);
+
+                        } else
+
+                        {
+                            if (response.code() == 401)
+                            {
+                                callback.onUnauthorized(response.code());
+                            }
+                            else {
+                                /*checkStatusCode(context, response.code(), response.message(), new OnCheckStatusCode() {
+                                    @Override
+                                    public void statuscode(int code) {
+                                        callback.onFailure("error");
+                                    }
+                                });*/
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<NotificationModel> call, @NonNull Throwable t) {
+                        Log.d("Result", "t" + t.getMessage());
+                        callback.onFailure(t.getMessage());
+
+                    }
+                }
+        );
+    }
 }
