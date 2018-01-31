@@ -5,10 +5,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by Shankar on 1/27/2018.
+ * Created by Shankar on 1/29/2018.
  */
 
-public class NotificationList {
+public class Notification {
+
     public String getNotification_id() {
         return notification_id;
     }

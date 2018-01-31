@@ -25,11 +25,11 @@ public class NotificationModel {
         this.msg = msg;
     }
 
-    public ArrayList<NotificationList> getData() {
+    public ArrayList<NotificationDateList> getData() {
         return data;
     }
 
-    public void setData(ArrayList<NotificationList> data) {
+    public void setData(ArrayList<NotificationDateList> data) {
         this.data = data;
     }
 
@@ -38,5 +38,5 @@ public class NotificationModel {
     @SerializedName("msg")
     String msg;
     @SerializedName("data")
-    ArrayList<NotificationList> data;
+    ArrayList<NotificationDateList> data;
 }

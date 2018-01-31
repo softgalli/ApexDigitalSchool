@@ -4,13 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.apextechies.apexschool.R;
 import com.apextechies.apexschool.adapter.NotificationAdapter;
 import com.apextechies.apexschool.common.BaseActivity;
 import com.apextechies.apexschool.intrface.ClickListener;
-import com.apextechies.apexschool.model.NotificationList;
+import com.apextechies.apexschool.model.NotificationDateList;
 import com.apextechies.apexschool.model.NotificationModel;
 import com.apextechies.apexschool.retrofit.DownlodableCallback;
 import com.apextechies.apexschool.retrofit.RetrofitDataProvider;
@@ -28,23 +30,22 @@ import butterknife.ButterKnife;
  */
 
 public class Notification extends BaseActivity {
-    @BindView(R.id.rv_common)  RecyclerView recyclerView;
+    @BindView(R.id.rv_common)
+    RecyclerView recyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private static final String TAG = "";
-    private ArrayList<NotificationList> notification_list;
+    private ArrayList<NotificationDateList> notification_list;
     private RetrofitDataProvider retrofitDataProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         ButterKnife.bind(this);
         retrofitDataProvider = new RetrofitDataProvider(this);
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-//                .setFontAttrId(R.attr.fontPath)
-//                .build()
-//        );
         gwtCurrentDate();
         initWidgit();
         getNotificationList();
@@ -63,12 +64,12 @@ public class Notification extends BaseActivity {
         retrofitDataProvider.notification("apexschool_1001", new DownlodableCallback<NotificationModel>() {
             @Override
             public void onSuccess(final NotificationModel result) {
-              //  closeDialog();
+                //  closeDialog();
 
 
                 if (result.getStatus().contains(PreferenceName.TRUE)) {
 
-                    notification_list=result.getData();
+                    notification_list = result.getData();
                     setAdapter();
 
                 }
@@ -77,7 +78,7 @@ public class Notification extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-               // closeDialog();
+                // closeDialog();
             }
 
             @Override
@@ -88,7 +89,7 @@ public class Notification extends BaseActivity {
     }
 
     private void setAdapter() {
-        recyclerView.setAdapter(new NotificationAdapter(this,notification_list, R.layout.notification_item, new ClickListener() {
+        recyclerView.setAdapter(new NotificationAdapter(this, notification_list, R.layout.notification_item, new ClickListener() {
             @Override
             public void Onclick(int pos) {
 
@@ -97,7 +98,23 @@ public class Notification extends BaseActivity {
     }
 
     private void initWidgit() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         notification_list = new ArrayList<>();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
