@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apextechies.apexschool">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -11,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.Notification"
+            android:name=".activity.MainActivity"
             android:label="@string/text_notification"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,13 +20,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <meta-data
-            xmlns:tools="http://schemas.android.com/tools"
+        <activity
+            android:name=".activity.ApplyLeaveActivity"
+            android:label="@string/text_notification" />
+
+        <meta-data xmlns:tools="http://schemas.android.com/tools"
             android:name="io.fabric.ApiKey"
             android:value="185cd65e35579c876af0ada8ca5fcc40ac8cded2"
-            tools:replace="android:value"/>
+            tools:replace="android:value" />
     </application>
 
 </manifest>
