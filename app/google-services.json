@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1027138269824",
+    "firebase_url": "https://apexschool-5d419.firebaseio.com",
+    "project_id": "apexschool-5d419",
+    "storage_bucket": "apexschool-5d419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027138269824:android:b27f95ffcdf9bde9",
+        "android_client_info": {
+          "package_name": "com.apextechies.apexschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027138269824-22pqkpd3n0ioj20mhkkbfl7lq04147ah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVvyWfvp_zeT-B7nD4RHidssH3igcMBho"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
