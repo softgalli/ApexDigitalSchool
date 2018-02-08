@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApexSchool.iml" filepath="$PROJECT_DIR$/ApexSchool.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weekcalender/weekcalender.iml" filepath="$PROJECT_DIR$/weekcalender/weekcalender.iml" />
     </modules>
   </component>
 </project>

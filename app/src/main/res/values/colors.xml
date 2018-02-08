@@ -3,8 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
- <!--use below color only-->
-    <color name="colorTextPrimary">#616161</color>
-    <color name="colorTextSecondary">#A1A1A1</color>
+    <!--use below color only-->
+    <color name="textColor">#080808</color>
+    <color name="colorTextPrimary">#080808</color>
+    <color name="subTextColor">#484747</color>
+    <color name="colorTextSecondary">#484747</color>
     <color name="colorTextWhite">#FFFFFF</color>
+    <color name="yellow">#e4d020</color>
+    <color name="green">#20e42a</color>
+    <color name="md_deep_purple_500">#673ab7</color>
+    <color name="md_green_500">#4caf50</color>
 </resources>

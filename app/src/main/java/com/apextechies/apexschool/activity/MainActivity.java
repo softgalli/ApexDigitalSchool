@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.approveLeave:
                 break;
             case R.id.takeAttendance:
+                startActivity(new Intent(mActivity, TakeAttendenceActivity.class));
                 break;
             case R.id.myAttendance:
                 break;
