@@ -1,7 +1,7 @@
 package com.apextechies.apexschool.retrofit;
 
 import com.apextechies.apexschool.model.NotificationModel;
-import com.apextechies.apexschool.utilz.WebServices;
+import com.apextechies.apexschool.calender.WebServices;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

@@ -9,6 +9,13 @@ import java.util.ArrayList;
  */
 
 public class NotificationModel {
+    @SerializedName("status")
+    String status;
+    @SerializedName("msg")
+    String msg;
+    @SerializedName("data")
+    ArrayList<NotificationDateList> data;
+
     public String getStatus() {
         return status;
     }
@@ -32,11 +39,4 @@ public class NotificationModel {
     public void setData(ArrayList<NotificationDateList> data) {
         this.data = data;
     }
-
-    @SerializedName("status")
-    String status;
-    @SerializedName("msg")
-    String msg;
-    @SerializedName("data")
-    ArrayList<NotificationDateList> data;
 }

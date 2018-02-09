@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.weekcalendar.listener.CalenderListener;
-import com.weekcalendar.utils.ViewUtils;
-import com.weekcalendar.utils.WeekCalendarOptions;
+import com.apextechies.apexschool.listener.CalenderListener;
+import com.apextechies.apexschool.utils.ViewUtils;
+import com.apextechies.apexschool.utils.WeekCalendarOptions;
+import com.apextechies.apexschool.calender.CalUtil;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.Weeks;
@@ -44,21 +45,17 @@ public class WeekCalendarFragment extends Fragment {
 
     public static final String ARGUMENT_PACKAGE_NAME = "package";
     public static String PACKAGE_NAME_VALUE;
-
+    private static WeekCalendarFragment sWeekCalendarInstance;
+    Calendar mPreSelectedDate;
     private LocalDateTime mStartDate, mSelectedDate;
-
     private TextView mMonthView, mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv;
     private TextView mThursdayTv, mFridayTv, mSaturdayTv;
     private TextView[] mDayHeaders;
     private ViewPager mViewPager;
-    private LinearLayout mBackground,mChangeDate;
+    private LinearLayout mBackground, mChangeDate;
     private ViewGroup mFrameDatePicker;
     private CalenderListener mCalenderListener;
-
     private long[] mEventDays;
-
-    private static WeekCalendarFragment sWeekCalendarInstance;
-
     private boolean mDisplayDatePicker = true;
     //initial values of calender property
     private String mSelectorDateIndicatorValue = "bg_red";
@@ -85,24 +82,22 @@ public class WeekCalendarFragment extends Fragment {
         sWeekCalendarInstance = this;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(com.weekcalendar.R.layout.fragment_week_calender, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_week_calender, container, false);
 
-        mViewPager = (ViewPager) view.findViewById(com.weekcalendar.R.id.view_pager);
-        mMonthView = (TextView) view.findViewById(com.weekcalendar.R.id.month_tv);
-        mSundayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_sunday);
-        mMondayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_monday);
-        mTuesdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_tuesday);
-        mWednesdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_wednesday);
-        mThursdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_thursday);
-        mFridayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_friday);
-        mSaturdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.week_saturday);
-        mBackground = (LinearLayout) view.findViewById(com.weekcalendar.R.id.background);
-        mChangeDate = (LinearLayout) view.findViewById(com.weekcalendar.R.id.changeDate);
-        mFrameDatePicker = (ViewGroup) view.findViewById(com.weekcalendar.R.id.frame_date_picker);
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        mMonthView = (TextView) view.findViewById(R.id.month_tv);
+        mSundayTv = (TextView) view.findViewById(R.id.week_sunday);
+        mMondayTv = (TextView) view.findViewById(R.id.week_monday);
+        mTuesdayTv = (TextView) view.findViewById(R.id.week_tuesday);
+        mWednesdayTv = (TextView) view.findViewById(R.id.week_wednesday);
+        mThursdayTv = (TextView) view.findViewById(R.id.week_thursday);
+        mFridayTv = (TextView) view.findViewById(R.id.week_friday);
+        mSaturdayTv = (TextView) view.findViewById(R.id.week_saturday);
+        mBackground = (LinearLayout) view.findViewById(R.id.background);
+        mChangeDate = (LinearLayout) view.findViewById(R.id.changeDate);
+        mFrameDatePicker = (ViewGroup) view.findViewById(R.id.frame_date_picker);
 
         mDayHeaders = new TextView[]{mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv
                 , mFridayTv, mSaturdayTv};
@@ -175,8 +170,6 @@ public class WeekCalendarFragment extends Fragment {
             fragment.ChangeSelector(ldt);
         }
     }
-
-    Calendar mPreSelectedDate;
 
     /**
      * Set date for the week calendar to start on resume
@@ -317,11 +310,11 @@ public class WeekCalendarFragment extends Fragment {
         }
         String[] headers;
         if (dayHeaderLength.equals(WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS)) {
-            headers = getResources().getStringArray(com.weekcalendar.R.array.week_header_three);
+            headers = getResources().getStringArray(R.array.week_header_three);
         } else if (dayHeaderLength.equals(WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER)) {
-            headers = getResources().getStringArray(com.weekcalendar.R.array.week_header_one);
+            headers = getResources().getStringArray(R.array.week_header_one);
         } else {
-            headers = getResources().getStringArray(com.weekcalendar.R.array.week_header_one);
+            headers = getResources().getStringArray(R.array.week_header_one);
         }
         int i = 0;
         for (TextView tv : mDayHeaders) {

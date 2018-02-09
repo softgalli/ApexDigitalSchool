@@ -24,13 +24,14 @@ import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.apextechies.apexschool.R;
+import com.apextechies.apexschool.WeekCalendarFragment;
 import com.apextechies.apexschool.adapter.AttendenceAdapter;
+import com.apextechies.apexschool.calender.CsvFileWriter;
+import com.apextechies.apexschool.calender.RealMController;
+import com.apextechies.apexschool.listener.CalenderListener;
 import com.apextechies.apexschool.model.Student;
 import com.apextechies.apexschool.preference.Prefs;
-import com.apextechies.apexschool.utilz.CsvFileWriter;
-import com.apextechies.apexschool.utilz.RealMController;
-import com.weekcalendar.listener.CalenderListener;
-import com.weekcalendar.utils.WeekCalendarOptions;
+import com.apextechies.apexschool.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 
@@ -43,13 +44,11 @@ import java.util.List;
 import io.realm.Realm;
 
 public class TakeAttendenceActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    public static final int REQ_CODE_READ_EXTERNAL_STORAGE_PERMISSION = 301;
     private static final String TAG = TakeAttendenceActivity.class.getSimpleName();
+    public static String[] mStrArrExternalStorageReadWritePermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private WeekCalendarFragment mWeekCalendarFragment;
     private TextView mDateSelectedTv;
-    public static final int REQ_CODE_READ_EXTERNAL_STORAGE_PERMISSION = 301;
-    public static final String PERMISSION_READ_EXT_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
-    public static final String PERMISSION_WRITE_EXT_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
-    public static String[] mStrArrExternalStorageReadWritePermissions = {PERMISSION_READ_EXT_STORAGE, PERMISSION_WRITE_EXT_STORAGE};
     private String fileName = "";
     private TextView filePath;
     private Activity mActivity;
@@ -97,7 +96,7 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
         studentList = new ArrayList();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.studentsRecyclerView);
-
+        mRecyclerView.setNestedScrollingEnabled(false);
         filePath = (TextView) findViewById(R.id.filePath);
     }
 
@@ -150,7 +149,7 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // create an Object for Adapter
-        mAdapter = new AttendenceAdapter(studentList);
+        mAdapter = new AttendenceAdapter(studentList, mActivity);
 
         // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(mAdapter);
@@ -222,7 +221,7 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
                         boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
                         if (showRationale) {
                             //For simple deny permission
-                            showPopupForCameraPermission();
+                            //showPopupForCameraPermission();
                         } else if (!showRationale) {
                             // for NEVER ASK AGAIN deny permission
                             showPopupForCameraPermission();

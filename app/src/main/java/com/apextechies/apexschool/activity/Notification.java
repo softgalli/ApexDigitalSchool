@@ -16,7 +16,7 @@ import com.apextechies.apexschool.model.NotificationDateList;
 import com.apextechies.apexschool.model.NotificationModel;
 import com.apextechies.apexschool.retrofit.DownlodableCallback;
 import com.apextechies.apexschool.retrofit.RetrofitDataProvider;
-import com.apextechies.apexschool.utilz.PreferenceName;
+import com.apextechies.apexschool.calender.PreferenceName;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,12 +30,11 @@ import butterknife.ButterKnife;
  */
 
 public class Notification extends BaseActivity {
+    private static final String TAG = "";
     @BindView(R.id.rv_common)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-    private static final String TAG = "";
     private ArrayList<NotificationDateList> notification_list;
     private RetrofitDataProvider retrofitDataProvider;
 

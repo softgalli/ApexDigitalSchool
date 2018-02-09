@@ -1,8 +1,6 @@
 package com.apextechies.apexschool;
 
 import android.app.Application;
-import android.support.multidex.MultiDexApplication;
-
 
 import org.joda.time.LocalDateTime;
 
@@ -14,46 +12,44 @@ public class AppController extends Application {
 
     private static AppController mInstance;
 
-    public LocalDateTime setDate,selectedDate;
+    public LocalDateTime setDate, selectedDate;
 
+    public static synchronized AppController getInstance() {
+        return mInstance;
+    }
 
     @Override
-	public void onCreate() {
-		super.onCreate();
-		mInstance = this;
-        MultiDexApplication.
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
+
+        // initialize Realm
+        Realm.init(getApplicationContext());
+        RealmConfiguration cfg = new RealmConfiguration.Builder()
                 .name(Realm.DEFAULT_REALM_NAME)
                 .schemaVersion(0)
                 .deleteRealmIfMigrationNeeded()
                 .build();
-        Realm.setDefaultConfiguration(realmConfiguration);
-	}
+        Realm.setDefaultConfiguration(cfg);
+    }
 
-	public static synchronized AppController getInstance() {
-		return mInstance;
-	}
+    /*getting the current week*/
+    public LocalDateTime getDate() {
+        return setDate;
+    }
 
     /**
      * Set the current week date
      *
      * @param setDate
      */
-    public void setDate(LocalDateTime setDate)
-    {
-       this.setDate=setDate;
-    }
-
-    /*getting the current week*/
-    public LocalDateTime getDate()
-    {
-        return setDate;
+    public void setDate(LocalDateTime setDate) {
+        this.setDate = setDate;
     }
 
     /*getting the selected week*/
 
-    public LocalDateTime getSelected()
-    {
+    public LocalDateTime getSelected() {
         return selectedDate;
     }
 
@@ -62,9 +58,8 @@ public class AppController extends Application {
      *
      * @param selectedDate
      */
-    public void setSelected(LocalDateTime selectedDate)
-    {
-        this.selectedDate=selectedDate;
+    public void setSelected(LocalDateTime selectedDate) {
+        this.selectedDate = selectedDate;
     }
 
 

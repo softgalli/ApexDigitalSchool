@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
+
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
@@ -26,6 +27,12 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
     buildTypes {
         release {
@@ -44,8 +51,6 @@ android {
     }
     dexOptions {
         javaMaxHeapSize "4g"
-    }
-    productFlavors {
     }
     sourceSets {
         main {
@@ -90,10 +95,9 @@ dependencies {
     }
     apply plugin: 'com.google.gms.google-services'
     compile 'com.github.citux:datetimepicker:0.2.0'
-    implementation project(':weekcalender')
-    // Realm
-    compile 'io.realm:realm-android:0.87.3'
 
     //Circular Image
     compile 'de.hdodenhof:circleimageview:1.3.0'
+
+    compile 'net.danlew:android.joda:2.9.9'
 }

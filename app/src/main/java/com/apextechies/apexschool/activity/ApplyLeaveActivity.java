@@ -10,7 +10,7 @@ import com.apextechies.apexschool.R;
  * Created by Welcome on 2/1/2018.
  */
 
-public class ApplyLeaveActivity extends AppCompatActivity{
+public class ApplyLeaveActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

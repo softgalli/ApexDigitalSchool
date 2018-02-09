@@ -7,6 +7,11 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class NotificationImage {
+    @SerializedName("notification_image_id")
+    String notification_image_id;
+    @SerializedName("notification_image")
+    String notification_image;
+
     public String getNotification_image_id() {
         return notification_image_id;
     }
@@ -22,9 +27,4 @@ public class NotificationImage {
     public void setNotification_image(String notification_image) {
         this.notification_image = notification_image;
     }
-
-    @SerializedName("notification_image_id")
-    String notification_image_id;
-    @SerializedName("notification_image")
-    String notification_image;
 }

@@ -1,4 +1,4 @@
-package com.apextechies.apexschool.utilz;
+package com.apextechies.apexschool.calender;
 
 import android.app.Activity;
 import android.app.Application;
@@ -61,9 +61,7 @@ public class RealMController {
 
     //clear all objects from Student.class
     public void clearAll() {
-
         realm.beginTransaction();
-        realm.clear(Student.class);
         realm.commitTransaction();
     }
 
@@ -80,8 +78,7 @@ public class RealMController {
 
     //check if Student.class is empty
     public boolean hasStudents() {
-
-        return !realm.allObjects(Student.class).isEmpty();
+        return !realm.where(Student.class).findAll().isEmpty();
     }
 
     //query example

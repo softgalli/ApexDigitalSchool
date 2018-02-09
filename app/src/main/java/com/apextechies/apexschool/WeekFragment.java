@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.weekcalendar.utils.WeekCalendarOptions;
+import com.apextechies.apexschool.utils.WeekCalendarOptions;
+import com.apextechies.apexschool.calender.CalUtil;
 
 import org.joda.time.LocalDateTime;
 
@@ -86,23 +87,23 @@ public class WeekFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(com.weekcalendar.R.layout.weekcell, container, false);
+        View view = inflater.inflate(R.layout.weekcell, container, false);
 
-        mSundayTv = (TextView) view.findViewById(com.weekcalendar.R.id.sun_txt);
-        mMondayTv = (TextView) view.findViewById(com.weekcalendar.R.id.mon_txt);
-        mTuesdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.tue_txt);
-        mWednesdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.wen_txt);
-        mThursdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.thu_txt);
-        mFridayTv = (TextView) view.findViewById(com.weekcalendar.R.id.fri_txt);
-        mSaturdayTv = (TextView) view.findViewById(com.weekcalendar.R.id.sat_txt);
+        mSundayTv = (TextView) view.findViewById(R.id.sun_txt);
+        mMondayTv = (TextView) view.findViewById(R.id.mon_txt);
+        mTuesdayTv = (TextView) view.findViewById(R.id.tue_txt);
+        mWednesdayTv = (TextView) view.findViewById(R.id.wen_txt);
+        mThursdayTv = (TextView) view.findViewById(R.id.thu_txt);
+        mFridayTv = (TextView) view.findViewById(R.id.fri_txt);
+        mSaturdayTv = (TextView) view.findViewById(R.id.sat_txt);
 
-        ImageView sundayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_sun_txt);
-        ImageView mondayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_mon_txt);
-        ImageView tuesdayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_tue_txt);
-        ImageView wednesdayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_wen_txt);
-        ImageView thursdayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_thu_txt);
-        ImageView fridayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_fri_txt);
-        ImageView saturdayEvent = (ImageView) view.findViewById(com.weekcalendar.R.id.img_sat_txt);
+        ImageView sundayEvent = (ImageView) view.findViewById(R.id.img_sun_txt);
+        ImageView mondayEvent = (ImageView) view.findViewById(R.id.img_mon_txt);
+        ImageView tuesdayEvent = (ImageView) view.findViewById(R.id.img_tue_txt);
+        ImageView wednesdayEvent = (ImageView) view.findViewById(R.id.img_wen_txt);
+        ImageView thursdayEvent = (ImageView) view.findViewById(R.id.img_thu_txt);
+        ImageView fridayEvent = (ImageView) view.findViewById(R.id.img_fri_txt);
+        ImageView saturdayEvent = (ImageView) view.findViewById(R.id.img_sat_txt);
 
         /*Adding WeekViews to array for background changing purpose*/
         mTextViewArray = new TextView[]{mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv
@@ -173,9 +174,9 @@ public class WeekFragment extends Fragment {
             tv.setTextColor(mPrimaryTextColor);
         }
 
-        long[] eventDaysPrim  = (long[]) getArguments()
+        long[] eventDaysPrim = (long[]) getArguments()
                 .getSerializable(WeekCalendarFragment.ARGUMENT_EVENT_DAYS);
-        ArrayList<LocalDateTime> eventDays  = new ArrayList<>();
+        ArrayList<LocalDateTime> eventDays = new ArrayList<>();
         if (eventDaysPrim != null) {
             for (long eventDay : eventDaysPrim) {
                 eventDays.add(LocalDateTime.fromDateFields(new Date(eventDay)));
@@ -342,18 +343,18 @@ public class WeekFragment extends Fragment {
 
     private int getEventColorDrawable(String eventColor) {
         if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_BLUE)) {
-            return com.weekcalendar.R.drawable.blue_circle;
+            return R.drawable.blue_circle;
         }
         if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_GREEN)) {
-            return com.weekcalendar.R.drawable.green_circle;
+            return R.drawable.green_circle;
         }
         if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_RED)) {
-            return com.weekcalendar.R.drawable.red_circle;
+            return R.drawable.red_circle;
         }
         if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_YELLOW)) {
-            return com.weekcalendar.R.drawable.yellow_circle;
+            return R.drawable.yellow_circle;
         } else {
-            return com.weekcalendar.R.drawable.white_circle;
+            return R.drawable.white_circle;
         }
     }
 }

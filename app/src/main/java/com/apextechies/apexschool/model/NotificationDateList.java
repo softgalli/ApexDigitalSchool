@@ -13,6 +13,8 @@ public class NotificationDateList {
 
     @SerializedName("notification_date")
     String notification_date;
+    @SerializedName("notification")
+    ArrayList<Notification> notification;
 
     public String getNotification_date() {
         return notification_date;
@@ -29,10 +31,6 @@ public class NotificationDateList {
     public void setNotification(ArrayList<Notification> notification) {
         this.notification = notification;
     }
-
-    @SerializedName("notification")
-    ArrayList<Notification> notification;
-
 
 
 }

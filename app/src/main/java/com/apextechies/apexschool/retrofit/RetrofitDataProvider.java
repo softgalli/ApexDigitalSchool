@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.apextechies.apexschool.common.BaseActivity;
 import com.apextechies.apexschool.model.NotificationModel;
-import com.apextechies.apexschool.utilz.WebServices;
+import com.apextechies.apexschool.calender.WebServices;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitDataProvider extends BaseActivity implements ServiceMethods {
     private Context context;
+
+    public RetrofitDataProvider(Context context) {
+        this.context = context;
+    }
 
     private ApiRetrofitService createRetrofitService() {
 
@@ -46,12 +50,6 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
         return retrofit.create(ApiRetrofitService.class);
     }
 
-    public  RetrofitDataProvider(Context context)
-    {
-        this.context = context;
-    }
-
-
     @Override
     public void notification(String school_id, final DownlodableCallback<NotificationModel> callback) {
         createRetrofitService().otpLogin(school_id).enqueue(
@@ -66,11 +64,9 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
                         } else
 
                         {
-                            if (response.code() == 401)
-                            {
+                            if (response.code() == 401) {
                                 callback.onUnauthorized(response.code());
-                            }
-                            else {
+                            } else {
                                 /*checkStatusCode(context, response.code(), response.message(), new OnCheckStatusCode() {
                                     @Override
                                     public void statuscode(int code) {

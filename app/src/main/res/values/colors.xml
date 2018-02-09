@@ -13,4 +13,8 @@
     <color name="green">#20e42a</color>
     <color name="md_deep_purple_500">#673ab7</color>
     <color name="md_green_500">#4caf50</color>
+
+
+    <color name="blue_dark">#018091</color>
+    <color name="red">#CC0000</color>
 </resources>
