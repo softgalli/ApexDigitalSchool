@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,38 +32,59 @@ import com.apextechies.apexschool.calender.RealMController;
 import com.apextechies.apexschool.listener.CalenderListener;
 import com.apextechies.apexschool.model.Student;
 import com.apextechies.apexschool.preference.Prefs;
+import com.apextechies.apexschool.retrofit.RetrofitDataProvider;
+import com.apextechies.apexschool.utils.ViewUtils;
 import com.apextechies.apexschool.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 
 import java.io.File;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 
 public class TakeAttendenceActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     public static final int REQ_CODE_READ_EXTERNAL_STORAGE_PERMISSION = 301;
     private static final String TAG = TakeAttendenceActivity.class.getSimpleName();
     public static String[] mStrArrExternalStorageReadWritePermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.totalStudentCount)
+    TextView totalStudentCount;
+    @BindView(R.id.presentStudentCount)
+    TextView presentStudentCount;
+    @BindView(R.id.absentStudentCount)
+    TextView absentStudentCount;
+    @BindView(R.id.filePath)
+    TextView filePath;
+    @BindView(R.id.uploadAttendenceBtn)
+    TextView uploadAttendenceBtn;
+    @BindView(R.id.seeAttendenceBtn)
+    TextView seeAttendenceBtn;
+    @BindView(R.id.mDateSelectedTv)
+    TextView mDateSelectedTv;
     private WeekCalendarFragment mWeekCalendarFragment;
-    private TextView mDateSelectedTv;
     private String fileName = "";
-    private TextView filePath;
     private Activity mActivity;
     private Realm realm;
-    private RecyclerView mRecyclerView;
     private AttendenceAdapter mAdapter;
     private ArrayList<Student> studentList;
+    private String className = "";
+    public boolean isAttendenceTakenAndSaved = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.take_attendance_activity);
+        ButterKnife.bind(this);
         mActivity = this;
-        mDateSelectedTv = (TextView) findViewById(R.id.txt_date);
         mWeekCalendarFragment = (WeekCalendarFragment) getSupportFragmentManager()
                 .findFragmentByTag(WeekCalendarFragment.class.getSimpleName());
 
@@ -95,48 +117,88 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
         mActivity = this;
         studentList = new ArrayList();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.studentsRecyclerView);
+        if (getIntent().getExtras() != null && getIntent().hasExtra("ClassName"))
+            className = getIntent().getStringExtra("ClassName");
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Take Attendence Class " + className);
+
         mRecyclerView.setNestedScrollingEnabled(false);
-        filePath = (TextView) findViewById(R.id.filePath);
     }
 
     private void manageCreateAndUploadAttendence() {
         File folder = new File(Environment.getExternalStorageDirectory() + "/Attendence");
-
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(c);
         boolean var = false;
         if (!folder.exists())
             var = folder.mkdir();
 
         Log.i(TAG, "var : " + var);
 
-        fileName = folder.toString() + "/" + "Class8.csv";
+        fileName = folder.toString() + "/Class_" + className + "_" + formattedDate + ".csv";
         filePath.setText(fileName);
     }
 
+    private RetrofitDataProvider retrofitDataProvider;
+
     private void getStudentListFromServer() {
+        retrofitDataProvider = new RetrofitDataProvider(mActivity);
         //Use Here your common internet checker method
-        boolean internetConnection = true;
-        if (internetConnection) {
-            //TODO Need to get this list from API call
+        if (ViewUtils.isOnline(mActivity)) {
+            /*retrofitDataProvider.getStudentListForAttendence("apexschool_1001", new DownlodableCallback<Student>() {
+                @Override
+                public void onSuccess(final Student result) {
+                    //  closeDialog();
+                    if (result.getStatus().contains(PreferenceName.TRUE)) {
+                        studentList = result.getData();
+                    }
+                    if (studentList != null && studentList.size() > 0)
+                        getStudentListFromRealM();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    // closeDialog();
+                }
+
+                @Override
+                public void onUnauthorized(int errorNumber) {
+
+                }
+            });*/
+
+
+            /*###########################################################################################*/
+            //TODO remove after calling api and getting response from server
             for (int i = 1; i <= 15; i++) {
                 Student st = new Student("SchoolName" + i, "Student Name " + i, "Father Name " + i, "F", 21);
                 studentList.add(st);
             }
-            //saving loaded data from server to realm
-            if (studentList != null && studentList.size() > 0) {
-                for (Student student : studentList) {
-                    // Persist your data easily
-                    realm.beginTransaction();
-                    realm.copyToRealm(student);
-                    realm.commitTransaction();
-                }
+            getStudentListFromRealM();
+            /*###########################################################################################*/
 
-                Prefs.setPreLoad(true);
-            }
         } else if (Prefs.isPreLoaded()) {
             RealMController realMController = RealMController.with(mActivity);
             if (realMController != null)
                 studentList.addAll(realMController.getStudentsList());
+        } else {
+            ViewUtils.showNoInternetConnectionDialog(mActivity);
+        }
+    }
+
+    private void getStudentListFromRealM() {
+        //saving loaded data from server to realm
+        if (studentList != null && studentList.size() > 0) {
+            for (Student student : studentList) {
+                // Persist your data easily
+                realm.beginTransaction();
+                realm.copyToRealm(student);
+                realm.commitTransaction();
+            }
+
+            Prefs.setPreLoad(true);
         }
     }
 
@@ -156,28 +218,18 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
 
     }
 
-    public void uploadAttendence(View view) {
-        Toast.makeText(mActivity, "Uploading File", Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void seeAttendence(View view) throws IOException {
-        String data = "";
-        List<Student> studentsList = ((AttendenceAdapter) mAdapter).getStudentist();
-        for (int i = 0; i < studentsList.size(); i++) {
-            Student singleStudent = studentsList.get(i);
-            if (singleStudent.isSelected() == true) {
-                Student student1 = new Student(singleStudent.getStudentId(), singleStudent.getStudentName(), singleStudent.getFatherName(), singleStudent.getGender(), singleStudent.getAge());
-                data = data + "\n" + singleStudent.getStudentName().toString();
+    public void seeAttendence() {
+        try {
+            List<Student> studentsList = (mAdapter).getStudentist();
+            if (!TextUtils.isEmpty(fileName) && studentsList != null && studentsList.size() > 0) {
+                CsvFileWriter.writeCsvFile(fileName, studentsList);
+            } else {
+                Toast.makeText(mActivity, "Something went wrong while creating attendence csv file", Toast.LENGTH_SHORT).show();
             }
+            showAttendence();
+        } catch (Exception e) {
+            Log.e(TAG, "Something went wrong while creating attendence csv file,\nReason : " + e);
         }
-        Toast.makeText(mActivity, " " + data, Toast.LENGTH_SHORT).show();
-        if (!TextUtils.isEmpty(fileName) && studentsList != null && studentsList.size() > 0) {
-            CsvFileWriter.writeCsvFile(fileName, studentsList);
-        } else {
-            Toast.makeText(mActivity, "", Toast.LENGTH_SHORT).show();
-        }
-        showAttendence();
     }
 
     public void showAttendence() {
@@ -191,8 +243,7 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
             try {
                 startActivity(pdfIntent);
             } catch (Exception e) {
-                Toast.makeText(mActivity, "Please install MS-Excel app to view the file.",
-                        Toast.LENGTH_SHORT).show();
+                ViewUtils.showMessageOnDialog(mActivity, "Install MS-Excel", "Please install MS-Excel app to view the file.");
             }
         }
     }
@@ -328,5 +379,52 @@ public class TakeAttendenceActivity extends AppCompatActivity implements DatePic
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth);
         mWeekCalendarFragment.setDateWeek(calendar);//Sets the selected date from Picker
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                saveAttendenceBeforeLeave();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        saveAttendenceBeforeLeave();
+    }
+
+    private void saveAttendenceBeforeLeave() {
+        if (isAttendenceTakenAndSaved) {
+            Toast.makeText(mActivity, "Attendence Taken", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(mActivity, "Are you sure?", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @OnClick({R.id.uploadAttendenceBtn, R.id.seeAttendenceBtn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.uploadAttendenceBtn:
+                //uploadAttendence();
+                break;
+            case R.id.seeAttendenceBtn:
+                seeAttendence();
+                break;
+        }
+    }
+
+    public void manageAbsentPresentCount(int mIntTotalStudentCount, int mIntAbsentStudentCount) {
+        if (totalStudentCount != null)
+            totalStudentCount.setText(mIntTotalStudentCount + "\nTotal Students");
+        if (presentStudentCount != null)
+            presentStudentCount.setText((mIntTotalStudentCount - mIntAbsentStudentCount) + "\nPresent");
+        if (absentStudentCount != null)
+            absentStudentCount.setText(mIntAbsentStudentCount + "\nAbsent");
     }
 }

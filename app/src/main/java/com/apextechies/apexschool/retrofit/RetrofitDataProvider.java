@@ -4,9 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.apextechies.apexschool.calender.WebServices;
 import com.apextechies.apexschool.common.BaseActivity;
 import com.apextechies.apexschool.model.NotificationModel;
-import com.apextechies.apexschool.calender.WebServices;
+import com.apextechies.apexschool.model.Student;
 
 import java.util.concurrent.TimeUnit;
 
@@ -57,13 +58,9 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
                     @Override
                     public void onResponse(@NonNull Call<NotificationModel> call, @NonNull final Response<NotificationModel> response) {
                         if (response.isSuccessful()) {
-
                             NotificationModel mobileRegisterPojo = response.body();
                             callback.onSuccess(mobileRegisterPojo);
-
-                        } else
-
-                        {
+                        } else {
                             if (response.code() == 401) {
                                 callback.onUnauthorized(response.code());
                             } else {
@@ -85,5 +82,10 @@ public class RetrofitDataProvider extends BaseActivity implements ServiceMethods
                     }
                 }
         );
+    }
+
+    @Override
+    public void getStudentListForAttendence(String school_id, DownlodableCallback<Student> callback) {
+        //Do stuff here
     }
 }

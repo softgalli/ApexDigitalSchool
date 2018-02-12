@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apextechies.apexschool.R;
+import com.apextechies.apexschool.activity.TakeAttendenceActivity;
 import com.apextechies.apexschool.model.Student;
 
 import java.util.List;
@@ -19,10 +20,16 @@ public class AttendenceAdapter extends
 
     private List<Student> mStudentsList;
     private Activity mActivity;
+    private int mIntTotalStudentCount;
+    private int mIntAbsentStudentCount;
 
     public AttendenceAdapter(List<Student> students, Activity mActivity) {
         this.mStudentsList = students;
         this.mActivity = mActivity;
+        mIntTotalStudentCount = 0;
+        if (students != null && students.size() > 0)
+            mIntAbsentStudentCount = mIntTotalStudentCount = mStudentsList.size();
+        ((TakeAttendenceActivity) mActivity).manageAbsentPresentCount(mIntTotalStudentCount, mIntAbsentStudentCount);
     }
 
     // Create new views
@@ -57,7 +64,9 @@ public class AttendenceAdapter extends
                     Student contact = (Student) cb.getTag();
                     contact.setSelected(true);
                     mStudentsList.get(pos).setSelected(true);
-
+                    ((TakeAttendenceActivity) mActivity).isAttendenceTakenAndSaved = false;
+                    mIntAbsentStudentCount = mIntAbsentStudentCount - 1;
+                    ((TakeAttendenceActivity) mActivity).manageAbsentPresentCount(mIntTotalStudentCount, mIntAbsentStudentCount);
                     Toast.makeText(v.getContext(), cb.getText() + " is present", Toast.LENGTH_LONG).show();
                 }
             });
@@ -66,10 +75,11 @@ public class AttendenceAdapter extends
                     managePresentAbsent(viewHolder.presentButton, viewHolder.absentButton, false);
                     Button cb = (Button) v;
                     Student contact = (Student) cb.getTag();
-
                     contact.setSelected(false);
                     mStudentsList.get(pos).setSelected(false);
-
+                    ((TakeAttendenceActivity) mActivity).isAttendenceTakenAndSaved = false;
+                    mIntAbsentStudentCount = mIntAbsentStudentCount + 1;
+                    ((TakeAttendenceActivity) mActivity).manageAbsentPresentCount(mIntTotalStudentCount, mIntAbsentStudentCount);
                     Toast.makeText(v.getContext(), cb.getText() + " is absent", Toast.LENGTH_LONG).show();
                 }
             });
@@ -77,7 +87,7 @@ public class AttendenceAdapter extends
             if (mStudentsList.get(position).isSelected()) {
                 managePresentAbsent(viewHolder.presentButton, viewHolder.absentButton, true);
             } else {
-                managePresentAbsent(viewHolder.absentButton, viewHolder.presentButton, false);
+                managePresentAbsent(viewHolder.presentButton, viewHolder.absentButton, false);
             }
         }
     }

@@ -44,7 +44,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -59,17 +60,92 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/txt_date"
+                            android:id="@+id/mDateSelectedTv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:textSize="20sp" />
 
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/studentsRecyclerView"
+                            android:id="@+id/mRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scrollbars="vertical" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <!--For absent present count -->
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/totalStudentCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_background"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:textColor="@color/colorTextWhite"
+                            android:textSize="@dimen/heading_text_size"
+                            android:textStyle="italic|bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/presentStudentCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/button_background"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:textColor="@color/colorTextWhite"
+                                android:textSize="@dimen/heading_text_size"
+                                android:textStyle="italic|bold" />
+
+                            <TextView
+                                android:id="@+id/absentStudentCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/button_background"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:textColor="@color/colorTextWhite"
+                                android:textSize="@dimen/heading_text_size"
+                                android:textStyle="italic|bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <!--For saving and uploading attendence -->
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/filePath"
@@ -89,13 +165,13 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/uploadAttendenceBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/button_background"
                                 android:gravity="center"
-                                android:onClick="uploadAttendence"
                                 android:padding="10dp"
                                 android:text="Upload Attendence"
                                 android:textColor="@color/colorTextWhite"
@@ -103,13 +179,13 @@
                                 android:textStyle="italic|bold" />
 
                             <TextView
+                                android:id="@+id/seeAttendenceBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/button_background"
                                 android:gravity="center"
-                                android:onClick="seeAttendence"
                                 android:padding="10dp"
                                 android:text="See Attendence"
                                 android:textColor="@color/colorTextWhite"
@@ -118,7 +194,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
-
             </LinearLayout>
 
         </LinearLayout>

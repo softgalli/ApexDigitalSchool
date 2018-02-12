@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -104,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.approveLeave:
                 break;
             case R.id.takeAttendance:
-                startActivity(new Intent(mActivity, TakeAttendenceActivity.class));
+                Intent intent = new Intent(mActivity, TakeAttendenceActivity.class);
+                intent.putExtra("ClassName", "10");
+                startActivity(intent);
                 break;
             case R.id.myAttendance:
                 break;
